@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
-* Студент: [Rom Nosk](https://up.htmlacademy.ru/php-individual/1/user/2390201).
-* Наставник: `Неизвестно`.
+* Студент: [Роман Носков](https://up.htmlacademy.ru/php-individual/1/user/2390201).
+* Наставник: [Сергей Попов](https://htmlacademy.ru/profile/id1181399).
 
 ---
 
