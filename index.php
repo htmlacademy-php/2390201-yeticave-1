@@ -41,6 +41,9 @@ $lots = [
   ]
 ];
 
+function price_format($price) {
+  return number_format(ceil($price), 0, ',', ' ').'₽';
+};
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -117,7 +120,7 @@ $lots = [
               <div class="lot__state">
                 <div class="lot__rate">
                   <span class="lot__amount">Стартовая цена</span>
-                  <span class="lot__cost"><?= $value['price'];?><b class="rub">р</b></span>
+                  <span class="lot__cost"><?= price_format($value['price']);?></span>
                 </div>
                 <div class="lot__timer timer">
                   12:23
