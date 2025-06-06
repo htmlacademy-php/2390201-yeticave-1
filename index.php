@@ -6,13 +6,13 @@ require_once('helpers.php');
 $title = 'YetiCave - Главная';
 $is_auth = rand(0, 1);
 $user_name = 'Роман Носков'; // укажите здесь ваше имя
-$categories = ['Доски и лыжи', 'Крепления', 'Ботинки', '<b>Одежда</b>', 'Инструменты', 'Разное'];
+$categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 $lots = [
   [
-    'name' => '<b>014 Rossignol District Snowboard</b>',
-    'category' => '<br>Доски и лыжи',
+    'name' => '014 Rossignol District Snowboard',
+    'category' => 'Доски и лыжи',
     'price' => 10999,
-    'picture' => '<br>./img/lot-1.jpg'
+    'picture' => './img/lot-1.jpg'
   ],
   [
     'name' => 'DC Ply Mens 2016/2017 Snowboard',
