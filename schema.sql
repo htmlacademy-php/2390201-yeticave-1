@@ -12,8 +12,8 @@ CREATE TABLE categories (
 
 CREATE TABLE lots (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(128) NOT NULL UNIQUE,
-  description CHAR(255) NOT NULL UNIQUE,
+  name VARCHAR(128) NOT NULL,
+  description CHAR(255) NOT NULL,
   image TEXT(512) NOT NULL,
   start_price INT NOT NULL,
   expire_date TIMESTAMP NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE lots (
 CREATE TABLE bets (
   id INT AUTO_INCREMENT PRIMARY KEY,
   make_time TIMESTAMP NOT NULL,
-  start_price INT NOT NULL,
+  price INT NOT NULL,
   user_id INT NOT NULL,
   lot_id INT NOT NULL
 );
