@@ -6,49 +6,29 @@ require_once('helpers.php');
 $title = 'YetiCave - Главная';
 $is_auth = rand(0, 1);
 $user_name = 'Роман Носков'; // укажите здесь ваше имя
-$categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
+$timer_finishing_hours = 0; // Количество часов, при котором нужно включать модификатор истечения времени лота
+
+$categories = [
+  [
+    'id' => 0,
+    'name' => '',
+    'code' => ''
+  ]
+];
+
 $lots = [
   [
-    'name' => '014 Rossignol District Snowboard',
-    'category' => 'Доски и лыжи',
-    'price' => 10999,
-    'picture' => './img/lot-1.jpg',
-    'expire_date' => '2025-06-07'
-  ],
-  [
-    'name' => 'DC Ply Mens 2016/2017 Snowboard',
-    'category' => 'Доски и лыжи',
-    'price' => 159999,
-    'picture' => './img/lot-2.jpg',
-    'expire_date' => '2025-06-09'
-  ],
-  [
-    'name' => 'Крепления Union Contact Pro 2015 года размер L/XL',
-    'category' => 'Крепления',
-    'price' => 8000,
-    'picture' => './img/lot-3.jpg',
-    'expire_date' => '2025-06-10'
-  ],
-  [
-    'name' => 'Ботинки для сноуборда DC Mutiny Charocal',
-    'category' => 'Ботинки',
-    'price' => 10999,
-    'picture' => './img/lot-4.jpg',
-    'expire_date' => '2025-06-11'
-  ],
-  [
-    'name' => 'Куртка для сноуборда DC Mutiny Charocal',
-    'category' => 'Одежда',
-    'price' => 7500,
-    'picture' => './img/lot-5.jpg',
-    'expire_date' => '2025-06-08'
-  ],
-  [
-    'name' => 'Маска Oakley Canopy',
-    'category' => 'Разное',
-    'price' => 5400,
-    'picture' => './img/lot-6.jpg',
-    'expire_date' => '2025-06-10'
+    'id' => 0,
+    'name' => '',
+    'description' => '',
+    'image' => '',
+    'start_price' => 0,
+    'expire_date' => '',
+    'bet_step' => 0,
+    'author_id' => 0,
+    'winner_id' => 0,
+    'category_id' => 0,
+    'category' => ''
   ]
 ];
 
@@ -72,20 +52,54 @@ function get_dt_range(string $expire_date) {
   return $time_left;
 }
 
-// Количество часов, при котором нужно включать модификатор истечения времени лота
-$timer_finishing_hours = 0;
+//Установление SQL-соединения с базой данных yeticave
+$connection = mysqli_connect("localhost", "sqladmin", "1234","yeticave");
+mysqli_set_charset($connection, "utf8mb4");
 
-// Фильтрация $categories, $lots и $user_name для защиты от XSS - удаляем все теги.
+//Чтение перечня категорий
+$sql_take_categories = "SELECT * FROM categories";
+$result_categories = mysqli_query($connection, $sql_take_categories);
+if (!$result_categories) {
+	die("Ошибка чтения перечня категорий (TABLE categories)");
+};
+$categories = mysqli_fetch_all($result_categories, MYSQLI_ASSOC);
+
+// Фильтрация $categories для защиты от XSS - удаляем все html-теги.
 foreach($categories as $key => $value) {
-  $categories[$key] = strip_tags($value);
+  foreach($categories[$key] as $category_key => $category_value) {
+    $categories[$key][$category_key] = strip_tags($category_value);
+  }
 }
 
+//Чтение перечня лотов
+$sql_take_lots = "SELECT
+    lots.id,
+    lots.name,
+    lots.description,
+    lots.image,
+    lots.start_price,
+    lots.expire_date,
+    lots.bet_step,
+    lots.author_id,
+    lots.winner_id,
+    lots.category_id,
+    categories.name AS category
+FROM lots JOIN categories ON lots.category_id = categories.id GROUP BY lots.id;";
+
+$result_lots = mysqli_query($connection, $sql_take_lots);
+if (!$result_lots) {
+	die("Ошибка чтения перечня лотов (TABLE lots)");
+};
+$lots = mysqli_fetch_all($result_lots, MYSQLI_ASSOC);
+
+// Фильтрация $lots для защиты от XSS - удаляем все html-теги.
 foreach($lots as $key => $value) {
   foreach($lots[$key] as $lot_key => $lot_value) {
     $lots[$key][$lot_key] = strip_tags($lot_value);
   }
 }
 
+// Фильтрация $user_name для защиты от XSS - удаляем все html-теги.
 $user_name = strip_tags($user_name);
 
 // HTML-код тега <main> главной страницы
