@@ -31,7 +31,7 @@
             </div>
             <?php
               $lot_expire_range = get_dt_range($lot['expire_date']);
-              if (intval($lot_expire_range[0]) <= $timer_finishing_hours) {
+              if (intval($lot_expire_range[0]) <= TIMER_FINISING_HOURS) {
                 $timer_finishing_modifier = ' timer--finishing';
               } else {
                 $timer_finishing_modifier = '';

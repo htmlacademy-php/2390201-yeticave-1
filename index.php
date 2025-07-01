@@ -37,10 +37,10 @@ foreach($lots as $key => $value) {
 $user_name = strip_tags($user_name);
 
 // HTML-код тега <main> главной страницы
-$page_content = include_template('main.php', ['categories' => $categories, 'lots' => $lots, 'timer_finishing_hours' => $timer_finishing_hours]);
+$page_content = include_template('main.php', ['categories' => $categories, 'lots' => $lots]);
 
 // окончательный HTML-код
 $layout_content = include_template('layout.php', ['page_content' => $page_content, 'title' => $title, 'is_auth' => $is_auth, 'user_name' => $user_name, 'categories' => $categories]);
 
 print($layout_content);
-?>
+

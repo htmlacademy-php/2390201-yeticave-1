@@ -8,20 +8,20 @@
   </ul>
 </nav>
 <section class="lot-item container">
-  <h2><?=$lot['name'];?></h2>
+  <h2><?=strip_tags($lot['name']);?></h2>
   <div class="lot-item__content">
     <div class="lot-item__left">
       <div class="lot-item__image">
-        <img src="<?=$lot['image'];?>" width="730" height="548" alt="Сноуборд">
+        <img src="<?=strip_tags($lot['image']);?>" width="730" height="548" alt="Сноуборд">
       </div>
-      <p class="lot-item__category">Категория: <span><?=$lot['category'];?></span></p>
-      <p class="lot-item__description"><?=$lot['description'];?></p>
+      <p class="lot-item__category">Категория: <span><?=strip_tags($lot['category']);?></span></p>
+      <p class="lot-item__description"><?=strip_tags($lot['description']);?></p>
     </div>
     <div class="lot-item__right">
       <div class="lot-item__state">
         <?php
-          $lot_expire_range = get_dt_range($lot['expire_date']);
-          if (intval($lot_expire_range[0]) <= $timer_finishing_hours) {
+          $lot_expire_range = get_dt_range(strip_tags($lot['expire_date']));
+          if (intval($lot_expire_range[0]) <= TIMER_FINISING_HOURS) {
             $timer_finishing_modifier = ' timer--finishing';
           } else {
             $timer_finishing_modifier = '';
@@ -33,10 +33,10 @@
         <div class="lot-item__cost-state">
           <div class="lot-item__rate">
             <span class="lot-item__amount">Текущая цена</span>
-            <span class="lot-item__cost"><?=$lot_price;?></span>
+            <span class="lot-item__cost"><?=strip_tags($lot['price']);?></span>
           </div>
           <div class="lot-item__min-cost">
-            Мин. ставка <span><?=$lot_bet;?> р</span>
+            Мин. ставка <span><?=strip_tags($lot['min_bet']);?> р</span>
           </div>
         </div>
         <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post" autocomplete="off">
