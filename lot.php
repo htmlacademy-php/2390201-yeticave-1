@@ -9,10 +9,7 @@ require_once 'init.php';
  */
 
 //Чтение перечня категорий
-require_once 'uploads/read_categories.php';
-
-// Фильтрация $user_name для защиты от XSS - удаляем все html-теги.
-$user_name = strip_tags($user_name);
+require_once 'model/read_categories.php';
 
 // Обработка входящего GET-параметра - id лота
 if (!isset($_GET['id'])) {
