@@ -19,3 +19,68 @@ function get_dt_range(string $expire_date) {
   }
   return $time_left;
 }
+
+// Функция для сохранения ранее введённого значения в поле формы с аттрибутом name = $name
+function getPostVal($name) {
+  return $_POST[$name] ?? "";
+}
+
+// Функция определяет расширение графического файла по его mime - типу. Если не находит подходящего типа, возвращает пустую строку.
+function defineImgFileExtention(string $mime_type) {
+  $image_file_types = [
+    ['.png', 'image/png'],
+    ['.jpe', 'image/jpeg'],
+    ['.jpg', 'image/jpeg'],
+    ['.gif', 'image/gif'],
+    ['.bmp', 'image/bmp'],
+    ['.ico', 'image/vnd.microsoft.icon'],
+    ['.tiff', 'image/tiff'],
+    ['.svg', 'image/svg+xml'],
+  ];
+
+  $file_extention = '';
+  foreach ($image_file_types as $value) {
+    if ($value[1]===$mime_type) {
+      $file_extention = $value[0];
+    }
+  }
+  return $file_extention;
+}
+
+// Проверяет длину $value, чтобы попадала между $min и $max
+function validateLength ($value, $min, $max) {
+  if($value) {
+    $len = strlen($value);
+    if ($len < $min or $len > $max) {
+      return "Значение должно быть от $min до $max символов";
+    }
+  } else {
+    return "Значение не должно быть пустым";
+  }
+  return null;
+}
+
+// Проверяет наличие id категории в массиве категорий
+function validateCategory($id, $categories) {
+  $findCategory = false;
+  foreach($categories as $category) {
+    if ($id === $category['id']) {
+      $findCategory = true;
+    }
+  }
+  return $findCategory ? null : "Вы не выбрали категорию";
+}
+
+// Проверяет дату на соответствие формату "ГГГГ-ММ-ДД"
+function validateDate($date) {
+  preg_match('/^(\\d{4})\\-(\\d{2})\\-(\\d{2})$/', $date, $m);
+  if (!checkdate($m[2], $m[3], $m[1])) {
+    return "Введите дату в формате 'ГГГГ-ММ-ДД'";
+  };
+
+  if ($date === date('Y-m-d')) {
+    return "Дата завершения торгов по лоту не должна быть сегодняшней";
+  }
+
+  return null;
+}

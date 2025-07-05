@@ -3,7 +3,7 @@
 require_once 'init.php';
 
 //Чтение перечня категорий
-include_once 'uploads/read_categories.php';
+include_once 'model/read_categories.php';
 
 //Чтение перечня лотов
 $sql_take_lots = "SELECT
@@ -33,14 +33,11 @@ foreach($lots as $key => $value) {
   }
 }
 
-// Фильтрация $user_name для защиты от XSS - удаляем все html-теги.
-$user_name = strip_tags($user_name);
-
 // HTML-код тега <main> главной страницы
 $page_content = include_template('main.php', ['categories' => $categories, 'lots' => $lots]);
 
 // окончательный HTML-код
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'title' => $title, 'is_auth' => $is_auth, 'user_name' => $user_name, 'categories' => $categories]);
+$layout_content = include_template('layout-main.php', ['page_content' => $page_content, 'title' => $title, 'is_auth' => $is_auth, 'user_name' => $user_name, 'categories' => $categories]);
 
 print($layout_content);
 
