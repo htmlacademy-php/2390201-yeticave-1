@@ -38,7 +38,7 @@ function getUserAndErrors(mysqli $connection): array {
   $user['name'] = htmlspecialchars($_POST['name']);
   $errors['name'] = validateLength($user['name'], 1, 255);
 
-  $user['password'] = password_hash(htmlspecialchars($_POST['password']), PASSWORD_DEFAULT);
+  $user['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
   $errors['password'] = validateLength($user['password'], 1, 128);
 
   $user['contacts'] = htmlspecialchars($_POST['message']);
@@ -63,6 +63,6 @@ function addUser(mysqli $connection, array $user) {
     http_response_code(500);
     die("Ошибка добавления нового пользователя в базу данных");
   } else {
-    header("Location: ./pages/login.html");
+    header("Location: ./login.php");
   };
 }
