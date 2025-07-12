@@ -21,7 +21,7 @@ function getLotAndErrors(array $categories): array {
   $lot['bet_step'] = filter_var($_POST['lot-step'], FILTER_VALIDATE_INT);
   $errors['bet_step'] = !$lot['bet_step'] ? "Введите сумму в рублях" : null;
 
-  $lot['author_id'] = 1;
+  $lot['author_id'] = isset($_SESSION['user']) ? $_SESSION['user']['id'] : 0;
 
   $lot['winner_id'] = null;
 
