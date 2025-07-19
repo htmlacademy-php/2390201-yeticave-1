@@ -1,13 +1,8 @@
 <?php
-// Содержит процесс входа пользователя на сайт
+// Сценарий входа пользователя на сайт
+
 // Подключение функций, инициализация переменных для работы сайта
 require_once 'init.php';
-
-/**
- * @var string user_name
- * @var int $is_auth
- * @var mysqli $connection
- */
 
 //Чтение перечня категорий
 require_once 'model/read_categories.php';
@@ -22,7 +17,6 @@ $page_content = include_template('login-page.php', ['categories' => $categories,
 // Отрабатываем нажатие кнопки входа пользователя на сайт
 if($_SERVER['REQUEST_METHOD']==='POST') {
   $credentials_and_errors = getCredentialsAndErrors($connection);
-  // $errors = $credentials_and_errors[1] ? $credentials_and_errors[1] : $credentials_and_errors[0]; //показываем введённые значения - для отладки
   $credentials = $credentials_and_errors[0];
   $errors = $credentials_and_errors[1];
 

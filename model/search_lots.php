@@ -12,11 +12,7 @@ function pagesNumber(mysqli $connection, string $search_content): int {
 
   $result = mysqli_stmt_get_result($stmt);
   $row = mysqli_fetch_assoc($result);
-  if ($row) {
-    return ceil((int)$row['total'] / LOTS_ON_PAGE);
-  } else {
-    return 0;
-  }
+  return (bool)$row ? ceil((int)$row['total'] / LOTS_ON_PAGE) : 0;
 }
 
 // Получение списка лотов по поисковому запросу $search_content
