@@ -5,17 +5,18 @@ date_default_timezone_set('Europe/Moscow');
 
 // Функция get_dt_range принимает в качестве параметра дату в формате ГГГГ-ММ-ДД,
 // и возвращает массив строк, где первый элемент — целое количество часов до даты,
-// а второй — остаток в минутах.
+// второй — остаток в минутах, третий - остаток в секундах.
 function get_dt_range(string $expire_date) {
-  $time_left = ['00', '00'];
+  $time_left = ['00','00','00'];
 
   $current_time = time();
   $expire_time = strtotime($expire_date);
 
-  $minutes_difference = floor(($expire_time - $current_time) / 60);
-  if ($minutes_difference > 0) {
-    $time_left[0] = str_pad(strval(floor($minutes_difference / 60)), 2, '0', STR_PAD_LEFT);
-    $time_left[1] = str_pad(strval($minutes_difference % 60), 2, '0', STR_PAD_LEFT);
+  $seconds_difference = $expire_time - $current_time;
+  if ($seconds_difference > 0) {
+    $time_left[0] = str_pad(strval(floor($seconds_difference / 3600)), 2, '0', STR_PAD_LEFT);
+    $time_left[1] = str_pad(strval(floor(($seconds_difference % 3600) / 60)), 2, '0', STR_PAD_LEFT);
+    $time_left[2] = str_pad(strval($seconds_difference % 60), 2, '0', STR_PAD_LEFT);
   }
   return $time_left;
 }
@@ -84,3 +85,36 @@ function validateDate($date) {
 
   return null;
 }
+
+/**
+ * Определяет разницу в "человеческом" формате между текущем временем и $make_time
+ * вспомогательная функция get_noun_plural_form берётся из helpers.php
+ */
+function humanTimeDiff(string $make_time): string {
+  $timestamp = strtotime($make_time);
+
+  if (!$timestamp) {
+    return "Неверная дата";
+  }
+
+  $now = time();
+  $diff = $timestamp - $now;
+  $abs_diff = abs($diff);
+
+  if ($diff < 0) {
+    if ($abs_diff < 60) {
+      return "$abs_diff " . get_noun_plural_form($abs_diff, "секунда", "секунды", "секунд") . " назад";
+    } elseif ($abs_diff < 3600) {
+      $minutes = floor($abs_diff / 60);
+      return "$minutes " . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " назад";
+    } elseif ($abs_diff < 86400) {
+      $hours = floor($abs_diff / 3600);
+      return "$hours " . get_noun_plural_form($hours, "час", "часа", "часов") . " назад";
+    } else {
+      return date("Y-m-d \в H:i", $timestamp);
+    }
+  } else {
+    return "Только что";
+  }
+}
+
