@@ -4,6 +4,9 @@
 // Подключение функций, инициализация переменных для работы сайта
 require_once 'init.php';
 
+// Определение списка победителей
+require_once 'getwinner.php';
+
 //Чтение перечня категорий
 include_once 'model/read_categories.php';
 
@@ -39,7 +42,7 @@ foreach($lots as $key => $value) {
 $page_content = include_template('main.php', ['categories' => $categories, 'lots' => $lots]);
 
 // окончательный HTML-код
-$layout_content = include_template('layout-main.php', ['page_content' => $page_content, 'title' => $title, 'is_auth' => $is_auth, 'user_name' => $user_name, 'categories' => $categories]);
+$layout_content = include_template('layout-main.php', ['page_content' => $page_content, 'title' => $title, 'categories' => $categories]);
 
 print($layout_content);
 
