@@ -92,7 +92,6 @@ function validateDate($date) {
  */
 function humanTimeDiff(string $make_time): string {
   $timestamp = strtotime($make_time);
-
   if (!$timestamp) {
     return "Неверная дата";
   }
@@ -101,20 +100,20 @@ function humanTimeDiff(string $make_time): string {
   $diff = $timestamp - $now;
   $abs_diff = abs($diff);
 
-  if ($diff < 0) {
-    if ($abs_diff < 60) {
-      return "$abs_diff " . get_noun_plural_form($abs_diff, "секунда", "секунды", "секунд") . " назад";
-    } elseif ($abs_diff < 3600) {
-      $minutes = floor($abs_diff / 60);
-      return "$minutes " . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " назад";
-    } elseif ($abs_diff < 86400) {
-      $hours = floor($abs_diff / 3600);
-      return "$hours " . get_noun_plural_form($hours, "час", "часа", "часов") . " назад";
-    } else {
-      return date("Y-m-d \в H:i", $timestamp);
-    }
-  } else {
+  if ($diff >= 0) {
     return "Только что";
   }
+  if ($abs_diff < 60) {
+    return "$abs_diff " . get_noun_plural_form($abs_diff, "секунда", "секунды", "секунд") . " назад";
+  }
+  $minutes = floor($abs_diff / 60);
+  if ($abs_diff < 3600) {
+    return "$minutes " . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " назад";
+  }
+  $hours = floor($abs_diff / 3600);
+  if ($abs_diff < 86400) {
+    return "$hours " . get_noun_plural_form($hours, "час", "часа", "часов") . " назад";
+  }
+  return date("Y-m-d \в H:i", $timestamp);
 }
 

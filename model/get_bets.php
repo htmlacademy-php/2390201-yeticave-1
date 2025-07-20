@@ -18,9 +18,9 @@ function getLotBets(mysqli $connection, int $user_id): ?array{
   JOIN categories ON categories.id = lots.category_id
   JOIN users ON users.id = lots.author_id
   JOIN (
-      SELECT lot_id, MAX(price) AS max_price
-      FROM bets
-      GROUP BY lot_id
+    SELECT lot_id, MAX(price) AS max_price
+    FROM bets
+    GROUP BY lot_id
   ) AS max_bets ON max_bets.lot_id = bets.lot_id
   WHERE bets.user_id = ?
   ORDER BY make_time DESC;";
