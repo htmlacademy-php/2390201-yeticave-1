@@ -15,6 +15,8 @@ function getLotAndErrors(array $categories): array {
   $lot['start_price'] = filter_var($_POST['lot-rate'], FILTER_VALIDATE_INT);
   $errors['start_price'] = !$lot['start_price'] ? "Введите сумму в рублях" : null;
 
+  $lot['publish_date'] = strval(date('Y-m-d H:m:s'));
+
   $lot['expire_date'] = $_POST['lot-date'];
   $errors['expire_date'] = validateDate($lot['expire_date']);
 
@@ -52,10 +54,10 @@ function getLotAndErrors(array $categories): array {
 function addLot(mysqli $connection, array $lot) {
    // Добавляем в БД запись о новом лоте
   $sql_add_lot = "INSERT INTO lots
-  (name, description, image, start_price, expire_date, bet_step, author_id, winner_id, category_id)
+  (name, description, image, start_price, publish_date, expire_date, bet_step, author_id, winner_id, category_id)
   VALUES
-  (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-  $stmt_add_lot = db_get_prepare_stmt($connection, $sql_add_lot, [$lot['name'], $lot['description'], $lot['image'], $lot['start_price'], $lot['expire_date'], $lot['bet_step'], $lot['author_id'], $lot['winner_id'], $lot['category_id']]);
+  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+  $stmt_add_lot = db_get_prepare_stmt($connection, $sql_add_lot, [$lot['name'], $lot['description'], $lot['image'], $lot['start_price'], $lot['publish_date'], $lot['expire_date'], $lot['bet_step'], $lot['author_id'], $lot['winner_id'], $lot['category_id']]);
   $result_add_lot = mysqli_stmt_execute($stmt_add_lot);
 
   if ( false===$result_add_lot || null===$result_add_lot ) {

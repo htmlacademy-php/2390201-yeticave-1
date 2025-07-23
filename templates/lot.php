@@ -12,16 +12,10 @@
       <div class="lot-item__state">
         <?php if($add_lot_allowed): ?>
           <?php
-            $lot_expire_range = get_dt_range(strip_tags($lot['expire_date']));
-            if (intval($lot_expire_range[0]) <= TIMER_FINISING_HOURS) {
-              $timer_finishing_modifier = ' timer--finishing';
-            } else {
-              $timer_finishing_modifier = '';
-            }
+            $left = get_dt_range($lot['expire_date']);
+            $tfin = (intval($left[0]) < TIMER_FINISING_HOURS) ? ' timer--finishing' : '';
           ?>
-          <div class="lot-item__timer timer<?= $timer_finishing_modifier;?>">
-            <?= $lot_expire_range[0];?>:<?= $lot_expire_range[1];?>
-          </div>
+          <div class="lot-item__timer timer<?=$tfin;?>"><?=$left[0].':'.$left[1]?></div>
           <div class="lot-item__cost-state">
             <div class="lot-item__rate">
               <span class="lot-item__amount">Текущая цена</span>
@@ -43,7 +37,7 @@
       </div>
       <div class="history">
         <?php if(!$lot_bets): ?>
-          <h3>Ставок по лоту ещё не было</h3>
+          <h3>Ставок по лоту не было</h3>
         <?php else: ?>
           <h3>История ставок (<span><?=count($lot_bets)?></span>)</h3>
           <table class="history__list">

@@ -1,10 +1,20 @@
 <?php
-// Обработка поисковых запросов
-// Получение количества страниц, соответствующих списку лотов по запросу $search_content
-function pagesNumber(mysqli $connection, string $search_content): int {
-  $sql_count_lots = "SELECT COUNT(*) AS total FROM lots WHERE MATCH(lots.name, lots.description) AGAINST(?);";
+// Обработка перечня лотов по выбранной категории
 
-  $stmt = db_get_prepare_stmt($connection, $sql_count_lots, [$search_content]);
+function categoryNameByID(array $categories, int $category_id): string {
+  for ( $i = 0; $i < count($categories); $i++) {
+    if ($categories[$i]['id'] == $category_id) {
+      return $categories[$i]['name'];
+    }
+  }
+  return 'такой категории нет';
+}
+
+// Получение количества страниц, соответствующих списку лотов по запросу $search_content
+function categoryPagesNumber(mysqli $connection, int $category_id): int {
+  $sql_count_lots = "SELECT COUNT(*) AS total FROM lots WHERE category_id = ?";
+
+  $stmt = db_get_prepare_stmt($connection, $sql_count_lots, [$category_id]);
   if (false === mysqli_stmt_execute($stmt)) {
     http_response_code(500);
     die("Ошибка взаимодействия с базой данных.");
@@ -16,7 +26,7 @@ function pagesNumber(mysqli $connection, string $search_content): int {
 }
 
 // Получение списка лотов по поисковому запросу $search_content
-function lotsFinded(mysqli $connection, string $search_content, int $offset): ?array {
+function categoryLotsFinded(mysqli $connection, int $category_id, int $offset): ?array {
   $sql_take_lots = "SELECT
     lots.id,
     lots.name,
@@ -30,12 +40,12 @@ function lotsFinded(mysqli $connection, string $search_content, int $offset): ?a
   FROM lots
   JOIN categories ON lots.category_id = categories.id
   LEFT JOIN bets ON lots.id = bets.lot_id
-  WHERE MATCH(lots.name, lots.description) AGAINST(?)
+  WHERE category_id = ?
   GROUP BY lots.id
   ORDER BY lots.publish_date DESC, lots.id ASC
   LIMIT ? OFFSET ?;";
 
-  $stmt_lots = db_get_prepare_stmt($connection, $sql_take_lots, [$search_content, LOTS_ON_PAGE, $offset]);
+  $stmt_lots = db_get_prepare_stmt($connection, $sql_take_lots, [$category_id, LOTS_ON_PAGE, $offset]);
   if(false === mysqli_stmt_execute($stmt_lots)) {
     http_response_code(500);
     die("Ошибка взаимодействия с базой данных.");

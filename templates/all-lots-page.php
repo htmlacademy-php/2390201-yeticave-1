@@ -1,9 +1,9 @@
 <div class="container">
   <section class="lots">
-    <h2>Результаты поиска по запросу «<span><?=$search_content;?></span>»</h2>
+    <h2>Все лоты в категории «<span><?=$category_name;?></span>»</h2>
     <ul class="lots__list">
       <?php if(!$lots_finded): ?>
-        <p>Ничего не найдено по вашему запросу.</p>
+        <p>В этой категории нет лотов.</p>
       <?php else: ?>
         <?php foreach($lots_finded as $lot):?>
           <li class="lots__item lot">
@@ -19,7 +19,7 @@
                     <span class="lot__amount">Стартовая цена</span>
                     <span class="lot__cost"><?= number_format(ceil($lot['start_price']), 0, ',', ' ').'₽';?></span>
                   <?php else: ?>
-                    <span class="lot__amount"><?=strval($lot['bets_number'])?> ставок</span> 
+                    <span class="lot__amount"><?=strval($lot['bets_number'])?> ставок</span>
                     <span class="lot__cost"><?= number_format(ceil($lot['current_price']), 0, ',', ' ').'₽';?></span>
                   <?php endif;?>
                 </div>
@@ -39,15 +39,15 @@
   <?php if($pages_number > 1): ?>
     <ul class="pagination-list">
       <li class="pagination-item pagination-item-prev">
-        <a <?=($current_page != 1) ? 'href="search.php?search='.$search_content.'&page='.($current_page-1).'"' : '';?>>Назад</a>
+        <a <?=($current_page != 1) ? 'href="all-lots.php?category='.$category_id.'&page='.($current_page-1).'"' : '';?>>Назад</a>
       </li>
       <?php for($page = 1; $page <= $pages_number; $page++): ?>
         <li class="pagination-item <?= ($page == $current_page) ? ' pagination-item-active' : '';?>">
-          <a href="search.php?search=<?=$search_content?>&page=<?=$page;?>"><?=$page;?></a>
+          <a href="all-lots.php?category=<?=$category_id?>&page=<?=$page;?>"><?=$page;?></a>
         </li>
       <?php endfor; ?>
       <li class="pagination-item pagination-item-next">
-        <a <?=($current_page != $pages_number) ? 'href="search.php?search='.$search_content.'&page='.($current_page+1).'"' : '';?>>Вперед</a>
+        <a <?=($current_page != $pages_number) ? 'href="all-lots.php?category='.$category_id.'&page='.($current_page+1).'"' : '';?>>Вперед</a>
       </li>
     </ul>
   <?php endif; ?>
