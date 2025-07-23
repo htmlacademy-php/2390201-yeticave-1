@@ -26,6 +26,7 @@ $search_content = isset($_GET['search'])
   : '';
 
 // Получение списка лота по поисковому запросу и определение кол-ва страниц пагинации
+$lots_finded = [];
 if ($search_content) {
   $lots_finded = lotsFinded($connection, $search_content, $offset);
   $pages_number = pagesNumber($connection, $search_content);
@@ -33,7 +34,7 @@ if ($search_content) {
 
 $page_content = include_template('search-page.php', ['search_content' => $search_content, 'lots_finded' => $lots_finded, 'pages_number' => $pages_number, 'current_page' => $current_page,'offset' => $offset]);
 
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'title' => $title, 'categories' => $categories]);
+$layout_content = include_template('layout.php', ['page_content' => $page_content, 'title' => $title, 'categories' => $categories, 'selected_category' => 0]);
 
 print($layout_content);
 

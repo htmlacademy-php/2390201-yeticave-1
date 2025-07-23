@@ -5,7 +5,7 @@
     <!--заполните этот список из массива категорий-->
     <?php foreach($categories as $category):?>
       <li class="promo__item promo__item--<?=$category['code'];?>">
-        <a class="promo__link" href="pages/all-lots.html"><?=$category['name'];?></a>
+        <a class="promo__link" href="all-lots.php?category=<?=$category['id']?>"><?=$category['name'];?></a>
       </li>
     <?php endforeach;?>
   </ul>
@@ -30,16 +30,10 @@
               <span class="lot__cost"><?= number_format(ceil($lot['start_price']), 0, ',', ' ').'₽';?></span>
             </div>
             <?php
-              $lot_expire_range = get_dt_range($lot['expire_date']);
-              if (intval($lot_expire_range[0]) <= TIMER_FINISING_HOURS) {
-                $timer_finishing_modifier = ' timer--finishing';
-              } else {
-                $timer_finishing_modifier = '';
-              }
+              $left = get_dt_range($lot['expire_date']);
+              $tfin = (intval($left[0]) < TIMER_FINISING_HOURS) ? ' timer--finishing' : '';
             ?>
-            <div class="lot__timer timer<?= $timer_finishing_modifier;?>">
-              <?= $lot_expire_range[0];?>:<?= $lot_expire_range[1];?>
-            </div>
+            <div class="lot__timer timer<?=$tfin;?>"><?=$left[0].':'.$left[1]?></div>
           </div>
         </div>
       </li>

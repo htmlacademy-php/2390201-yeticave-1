@@ -47,8 +47,9 @@
     <nav class="nav">
       <ul class="nav__list container">
         <?php foreach($categories as $category):?>
-          <li class="nav__item">
-            <a href="pages/all-lots.html"><?=$category['name'];?></a>
+          <?php $item_current = ($category['id'] == $selected_category) ? ' nav__item--current' : '';?>
+          <li class="nav__item<?=$item_current?>">
+            <a href="all-lots.php?category=<?=$category['id']?>"><?=$category['name'];?></a>
           </li>
         <?php endforeach;?>
       </ul>
@@ -63,8 +64,9 @@
     <ul class="nav__list container">
       <!--заполните этот список из массива категорий-->
       <?php foreach($categories as $category):?>
-        <li class="nav__item">
-          <a href="pages/all-lots.html"><?=$category['name'];?></a>
+        <?php $item_current = ($category['id'] == $selected_category) ? ' nav__item--current' : '';?>
+        <li class="nav__item<?=$item_current?>">
+          <a href="all-lots.php?category=<?=$category['id']?>"><?=$category['name'];?></a>
         </li>
       <?php endforeach;?>
     </ul>

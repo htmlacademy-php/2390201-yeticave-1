@@ -40,7 +40,7 @@ $add_lot_allowed = addLotAllowed ($lot, $lot_bets);
 $page_content = include_template('lot.php', ['categories' => $categories, 'lot' => $lot, 'lot_bets' => $lot_bets, 'add_lot_allowed' => $add_lot_allowed,'errors' => $errors]);
 
 // окончательный HTML-код
-$layout_content = include_template('layout.php', ['page_content' => $page_content, 'title' => $title, 'is_auth' => $is_auth, 'user_name' => $user_name, 'categories' => $categories]);
+$layout_content = include_template('layout.php', ['page_content' => $page_content, 'title' => $title, 'categories' => $categories, 'selected_category' => 0]);
 
 print($layout_content);
 

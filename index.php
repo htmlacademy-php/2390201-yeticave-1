@@ -17,13 +17,17 @@ $sql_take_lots = "SELECT
     lots.description,
     lots.image,
     lots.start_price,
+    lots.publish_date,
     lots.expire_date,
     lots.bet_step,
     lots.author_id,
     lots.winner_id,
     lots.category_id,
     categories.name AS category
-FROM lots JOIN categories ON lots.category_id = categories.id GROUP BY lots.id;";
+FROM lots
+JOIN categories ON lots.category_id = categories.id
+GROUP BY lots.id
+ORDER BY lots.publish_date DESC;";
 
 $result_lots = mysqli_query($connection, $sql_take_lots);
 if (!$result_lots) {
@@ -42,7 +46,7 @@ foreach($lots as $key => $value) {
 $page_content = include_template('main.php', ['categories' => $categories, 'lots' => $lots]);
 
 // окончательный HTML-код
-$layout_content = include_template('layout-main.php', ['page_content' => $page_content, 'title' => $title, 'categories' => $categories]);
+$layout_content = include_template('layout-main.php', ['page_content' => $page_content, 'title' => $title, 'categories' => $categories, 'selected_category' => 0]);
 
 print($layout_content);
 
