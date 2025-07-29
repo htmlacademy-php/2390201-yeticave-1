@@ -26,7 +26,4 @@ if ($connection === false) {
 
 // Данные, которыми наполняем сайт
 $title = 'YetiCave - Главная';
-// $is_auth = rand(0, 1);
-$is_auth = 0;
-$user_name = 'Роман Носков'; // укажите здесь ваше имя
 

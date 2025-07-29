@@ -63,8 +63,8 @@ function addLot(mysqli $connection, array $lot) {
   if ( false===$result_add_lot || null===$result_add_lot ) {
     http_response_code(500);
     die("Ошибка добавления лота в базу данных");
-  } else {
-    $lot_id = mysqli_insert_id($connection);
-    header("Location: lot.php?id=".strval($lot_id));
-  };
+  }
+
+  $lot_id = mysqli_insert_id($connection);
+  header("Location: lot.php?id=".strval($lot_id));
 }

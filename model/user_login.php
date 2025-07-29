@@ -38,10 +38,10 @@ function errorFindUserByEMail (mysqli $connection, string $email): ?string {
   $finded_user = mysqli_fetch_assoc($result_user);
   if (false === $finded_user || null === $finded_user) {
     return 'Пользователь с введённым e-mail не найден.';
-  } else {
-    $_SESSION['user']= $finded_user;
-    return null;
   }
+
+  $_SESSION['user']= $finded_user;
+  return null;
 }
 
 // Ищет пользователя с введёнными $credentials (логином-паролем) в БД. В случае успеха помещает его в массив $_SESSION, в случае неуспеха - выдаёт ошибки "не найден пользователь" или "пароль не совпадает с хранимым в БД"
