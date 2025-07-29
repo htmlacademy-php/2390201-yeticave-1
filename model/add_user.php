@@ -10,11 +10,10 @@ function validateUniqEMail(mysqli $connection, string $email) {
 
   $result_email = mysqli_stmt_get_result($stmt_email);
   $finded_email = mysqli_fetch_assoc($result_email);
-  if (false === $finded_email || null === $finded_email) {
-    return null;
-  } else {
-    return "Введённый e-mail уже зарегистрирован";
-  }
+
+  return (false === $finded_email || null === $finded_email)
+    ? null
+    : "Введённый e-mail уже зарегистрирован";
 }
 
 // Заполняет поля нового пользователя из массива $_POST, одновременно валидируя поля на ошибки
@@ -39,7 +38,7 @@ function getUserAndErrors(mysqli $connection): array {
   $errors['name'] = validateLength($user['name'], 1, 255);
 
   $user['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
-  $errors['password'] = validateLength($user['password'], 1, 128);
+  $errors['password'] = validateLength($_POST['password'], 1, 128);
 
   $user['contacts'] = htmlspecialchars($_POST['message']);
   $errors['contacts'] = validateLength($user['contacts'], 1, 1024);
@@ -62,7 +61,7 @@ function addUser(mysqli $connection, array $user) {
   if ( false===$result_add_user || null===$result_add_user ) {
     http_response_code(500);
     die("Ошибка добавления нового пользователя в базу данных");
-  } else {
-    header("Location: ./login.php");
-  };
+  }
+
+  header("Location: ./login.php");
 }

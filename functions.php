@@ -50,14 +50,15 @@ function defineImgFileExtention(string $mime_type) {
 
 // Проверяет длину $value, чтобы попадала между $min и $max
 function validateLength ($value, $min, $max) {
-  if($value) {
-    $len = strlen($value);
-    if ($len < $min or $len > $max) {
-      return "Значение должно быть от $min до $max символов";
-    }
-  } else {
+  if(!$value) {
     return "Значение не должно быть пустым";
   }
+
+  $len = strlen($value);
+  if ($len < $min or $len > $max) {
+    return "Значение должно быть от $min до $max символов";
+  }
+  
   return null;
 }
 

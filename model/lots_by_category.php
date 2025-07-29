@@ -10,7 +10,7 @@ function categoryNameByID(array $categories, int $category_id): string {
   return 'такой категории нет';
 }
 
-// Получение количества страниц, соответствующих списку лотов по запросу $search_content
+// Получение количества страниц, соответствующих списку лотов с категорией $category_id
 function categoryPagesNumber(mysqli $connection, int $category_id): int {
   $sql_count_lots = "SELECT COUNT(*) AS total FROM lots WHERE category_id = ?";
 
@@ -25,7 +25,7 @@ function categoryPagesNumber(mysqli $connection, int $category_id): int {
   return (bool)$row ? ceil((int)$row['total'] / LOTS_ON_PAGE) : 0;
 }
 
-// Получение списка лотов по поисковому запросу $search_content
+// Получение списка лотов с категорией $category_id
 function categoryLotsFinded(mysqli $connection, int $category_id, int $offset): ?array {
   $sql_take_lots = "SELECT
     lots.id,
